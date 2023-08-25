@@ -7,7 +7,7 @@ describe("Droplinked", function(){
         const [owner,producer,publisher,customer] = await ethers.getSigners();
         const Payment = await ethers.getContractFactory("DroplinkedPayment");
         const payment = await Payment.deploy();
-        const Droplinked = await ethers.getContractFactory("Droplinked");
+        const Droplinked = await ethers.getContractFactory("DroplinkedSg");
         const droplinked = await Droplinked.deploy(await payment.getAddress());
         return {droplinked,owner,producer,publisher,customer,fee};
     }
