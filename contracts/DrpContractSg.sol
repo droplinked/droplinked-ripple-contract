@@ -15,15 +15,7 @@ interface IPaymentContract {
 
 contract DroplinkedSg is ERC1155 {
     IPaymentContract internal immutable paymentContract;
-    // Using price feed of chainlink to get the price of MATIC/USD without external source or centralization
-    // Binance : 0x2514895c72f50D8bd4B4F9b1110F0D6bD2c97526
-    // Polygon : 0xd0D5e3DB44DE05E9F294BB0a3bEEaF030DE24Ada
-    AggregatorV3Interface internal immutable priceFeed =
-        AggregatorV3Interface(0xd0D5e3DB44DE05E9F294BB0a3bEEaF030DE24Ada);
-
-    // HeartBeat is used to check if the price is updated or not (in seconds)
-    // Polygon : 120
-    // Binance : 3600
+    
     uint16 public heartBeat = 120;
 
     error oldPrice();
@@ -191,16 +183,6 @@ contract DroplinkedSg is ERC1155 {
     function setFee(uint256 _fee) public onlyOwner {
         fee = _fee;
         emit FeeUpdated(_fee);
-    }
-
-    // Get the latest price of MATIC/USD with 8 digits shift ( the actual price is 1e-8 times the returned price )
-    function getLatestPrice(
-        uint80 roundId
-    ) public view returns (uint256, uint256) {
-        (, int256 price, , uint256 timestamp, ) = priceFeed.getRoundData(
-            roundId
-        );
-        return (uint256(price), timestamp);
     }
 
     function uri(
